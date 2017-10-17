@@ -20,4 +20,5 @@
 ## Useful commands
 
 - **View all app's config vars**: `heroku config`
-- 
+- `heroku config:set TOKEN='abc'`
+- `heroku config:unset TOKEN`
