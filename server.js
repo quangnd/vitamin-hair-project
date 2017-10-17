@@ -30,9 +30,11 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(expressValidator());
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
-app.use(require('connect-livereload')({
-  port: 35729
-}));
+if (app.get('env') !== 'production') {
+  app.use(require('connect-livereload')({
+    port: 35729
+  }));
+}
 app.use(function(req, res, next) {
   req.isAuthenticated = function() {
     var token = (req.headers.authorization && req.headers.authorization.split(' ')[1]) || req.cookies.token;
