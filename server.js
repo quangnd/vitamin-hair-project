@@ -10,8 +10,7 @@ var jwt = require('jsonwebtoken');
 var moment = require('moment');
 var request = require('request');
 
-// Load environment variables from .env file
-dotenv.load();
+
 
 // Models
 var User = require('./models/User');
@@ -31,6 +30,8 @@ app.use(expressValidator());
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 if (app.get('env') !== 'production') {
+  // Load environment variables from .env file
+  dotenv.load();
   app.use(require('connect-livereload')({
     port: 35729
   }));

@@ -8,11 +8,9 @@ angular.module('MyApp')
           $location.path('/account');
         })
         .catch(function(response) {
-          console.log(response.data);
           $scope.messages = {
             error: Array.isArray(response.data) ? response.data : [response.data]
           };
-          console.log($scope.messages);
         });
     };
 

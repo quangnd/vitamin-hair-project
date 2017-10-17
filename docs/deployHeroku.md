@@ -16,3 +16,8 @@
 - **DB Name** heroku_db
 - **Username**: adffdadf2341
 - **Password**: adf4234
+
+## Useful commands
+
+- **View all app's config vars**: `heroku config`
+- 
