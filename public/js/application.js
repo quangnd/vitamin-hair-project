@@ -45,7 +45,7 @@ angular.module('MyApp', ['ngRoute', 'satellizer'])
     $authProvider.signupUrl = '/signup';
     $authProvider.facebook({
       url: '/auth/facebook',
-      clientId: '980220002068787',
+      clientId: '527095360961951',
       redirectUri: 'http://localhost:3000/auth/facebook/callback'
     });
     $authProvider.google({

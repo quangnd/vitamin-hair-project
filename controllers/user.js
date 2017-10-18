@@ -297,8 +297,8 @@ exports.resetPost = function(req, res, next) {
  */
 exports.authFacebook = function(req, res) {
   var profileFields = ['id', 'name', 'email', 'gender', 'location'];
-  var accessTokenUrl = 'https://graph.facebook.com/v2.5/oauth/access_token';
-  var graphApiUrl = 'https://graph.facebook.com/v2.5/me?fields=' + profileFields.join(',');
+  var accessTokenUrl = 'https://graph.facebook.com/v2.10/oauth/access_token';
+  var graphApiUrl = 'https://graph.facebook.com/v2.10/me?fields=' + profileFields.join(',');
 
   var params = {
     code: req.body.code,
