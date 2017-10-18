@@ -123,8 +123,7 @@ exports.accountPut = function(req, res, next) {
       email: req.body.email,
       name: req.body.name,
       gender: req.body.gender,
-      location: req.body.location,
-      website: req.body.website
+      address: req.body.address
     }, { patch: true });
   }
   user.fetch().then(function(user) {
@@ -354,9 +353,11 @@ exports.authFacebook = function(req, res) {
                 user.set('name', profile.name);
                 user.set('email', profile.email);
                 user.set('gender', profile.gender);
-                user.set('location', profile.location && profile.location.name);
+                user.set('address', profile.location && profile.location.name);
                 user.set('picture', 'https://graph.facebook.com/' + profile.id + '/picture?type=large');
                 user.set('facebook', profile.id);
+                user.set('phone_number', '097');
+                user.set('referral_key', shortid.generate());
                 user.save().then(function(user) {
                   return res.send({ token: generateToken(user), user: user });
                 });

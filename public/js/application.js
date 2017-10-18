@@ -46,7 +46,7 @@ angular.module('MyApp', ['ngRoute', 'satellizer'])
     $authProvider.facebook({
       url: '/auth/facebook',
       clientId: '527095360961951',
-      redirectUri: 'http://localhost:3000/auth/facebook/callback'
+      redirectUri: 'https://vh-web.herokuapp.com/auth/facebook/callback'
     });
     $authProvider.google({
       url: '/auth/google',
