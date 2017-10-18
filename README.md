@@ -24,6 +24,74 @@ This project offers a rich development experience using the following technologi
 | [ESLint](http://eslint.org/)| Lint JS. Reports syntax and style issues.| 
 | [Editor Config](http://editorconfig.org) | Enforce consistent editor settings (spaces vs tabs, etc). |
 
+## Development process
+
+To contribute to this project. you MUST follow below development process:
+
+### 1. Create a [Pivotal](https://www.pivotaltracker.com/n/projects/2120676) story
+
+Story should explain purpose of contribution, must provide:
+- Description of the need of this contribution/code change
+- Type of story (bug, feature,...)
+- Owner
+
+### 2. Start story on Pivotal tracker
+
+
+### 3. Refresh local repo before start coding a future or fix bug
+
+``
+$ git checkout develop
+$ git pull origin develop
+``
+
+### 4. Create branch and implement code
+
+- Branch will be checked-out from branch `develop` not `master`.
+- Each story/feature/bugs fix MUST be implemented on a single branch.
+- Branch name MUST be `VH + story ID`. E.g
+
+``
+$ git checkout -b VH-129104975
+``
+- Implement your code.
+
+### 5. Commit your code
+
+- Only commit when your code passed tests.
+- One commit solves one ticket.
+- Add following at the end of your commit message: [(Finishes|Fixes|Delivers) #STORY_ID]
+
+### 6. Push code and send Pull request (PR)
+- Push your commit to your own repo
+- Send PR from your feature branch to develop branch in main repo
+- Your PR will ber reviewed and merge if qualify.
+
+E.g:
+
+```
+$ git commit -m 'Implement login feature [Finishes #129104975]'
+
+$ git commit -m 'Fix bug unable to send notification email [Fixes #122342543]'
+```
+
+### 7. Push code to remote repository
+
+``
+$ git push origin VH-129104975
+``
+
+### 8. Create a pull request.
+
+- Make a PR from your repo to branch `develop`.
+- PR will be merged only if there is a Review from `quangnd`.
+
+### 9. (Optional) re-implement after code review
+
+- Repeat step 6, commit message can be adjusted but must always have story id.
+
+### 10. Finish story
+
 ## Todo
 
 - [ ] Support auto refresh browser after frontend code changed.
