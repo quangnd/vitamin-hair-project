@@ -10,6 +10,7 @@ var sourcemaps = require('gulp-sourcemaps');
 var plumber = require('gulp-plumber');
 var livereload = require('gulp-livereload');
 var nodemon = require('nodemon');
+var sass = require('gulp-sass');
 
 gulp.task('angular', function () {
   return gulp.src([
@@ -23,11 +24,18 @@ gulp.task('angular', function () {
     .pipe(gulp.dest('public/js'));
 });
 
+gulp.task('sass', function(){
+  return gulp.src('app/assets/styles/**/*.scss')
+    .pipe(sass()) // Converts Sass to CSS with gulp-sass
+    .pipe(gulp.dest('public/css'))
+});
+
 gulp.task('templates', function () {
   return gulp.src('app/partials/**/*.html')
     .pipe(templateCache({ root: 'partials', module: 'MyApp' }))
     .pipe(gulpif(argv.production, uglify()))
-    .pipe(gulp.dest('public/js'));
+    .pipe(gulp.dest('public/js'))
+    .pipe(livereload());
 });
 
 gulp.task('vendor', function () {
@@ -37,9 +45,10 @@ gulp.task('vendor', function () {
 });
 
 
-gulp.task('watch', function () {
+gulp.task('watch',['angular','templates', 'sass'], function () {
   livereload.listen();
-  gulp.watch('**/*.css', function (files) {
+  gulp.watch('app/assets/styles/**/*.scss', ['sass']);
+  gulp.watch('public/css/**/*.css', function (files) {
     livereload.changed(files)
   });
   gulp.watch('app/**/*.js', ['angular']);
