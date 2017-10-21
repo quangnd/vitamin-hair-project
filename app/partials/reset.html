@@ -1,4 +1,34 @@
-<div class="container">
+<main class="main-content">
+  <div class="container">
+    <div class="row justify-content-center">
+      <div class="col-4 width395 p-0">
+        <div ng-if="messages.error" role="alert" class="text-danger mb-3">
+          <div ng-repeat="error in messages.error">{{error.msg}}</div>
+        </div>
+        <div ng-if="messages.success" role="alert" class="text-success mb-3">
+          <div ng-repeat="success in messages.success">{{success.msg}}</div>
+        </div>
+        <h3 class="h2 text-center fwb mb-4">Đặt lại mật khẩu</h3>
+        <form ng-submit="resetPassword()">
+          <div class="form-group">
+            <input type="password" name="password" id="password" ng-model="user.password" autofocus placeholder="Mật khẩu mới" class="form-control">
+          </div>
+          <div class="form-group">
+            <input type="password" name="confirm" id="confirm" ng-model="user.confirm" placeholder="Xác nhận mật khẩu mới" class="form-control">
+          </div>
+          <div class="form-group">
+            <button type="submit" class="form-btn btn btn-primary btn-lg btn-block">Đặt lại mật khẩu</button>
+          </div>
+          <div class='text-center'>
+            <a href="/signup">Đăng kí tài khoản mới</a>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</main>
+
+<!-- <div class="container">
   <div ng-if="messages.error" role="alert" class="text-danger">
     <div ng-repeat="error in messages.error">{{error.msg}}</div>
   </div>
@@ -16,4 +46,4 @@
     <br>
     <button type="submit">Change Password</button>
   </form>
-</div>
+</div> -->

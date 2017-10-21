@@ -1,5 +1,5 @@
-angular.module('MyApp', ['ngRoute', 'satellizer'])
-  .config(function($routeProvider, $locationProvider, $authProvider) {
+angular.module('MyApp', ['ngRoute', 'satellizer', 'angular-loading-bar'])
+  .config(function ($routeProvider, $locationProvider, $authProvider) {
     $locationProvider.html5Mode(true);
 
     $routeProvider
@@ -35,6 +35,16 @@ angular.module('MyApp', ['ngRoute', 'satellizer'])
         controller: 'ResetCtrl',
         resolve: { skipIfAuthenticated: skipIfAuthenticated }
       })
+      .when('/order', {
+        templateUrl: 'partials/orders/order.html',
+        controller: 'OrderCtrl',
+        resolve: { skipIfAuthenticated: skipIfAuthenticated }
+      })
+      .when('/try-product', {
+        templateUrl: 'partials/orders/tryProduct.html',
+        controller: 'TryProductCtrl',
+        resolve: { skipIfAuthenticated: skipIfAuthenticated }
+      })
       .otherwise({
         templateUrl: 'partials/404.html'
       });
@@ -63,7 +73,24 @@ angular.module('MyApp', ['ngRoute', 'satellizer'])
       }
     }
   })
-  .run(function($rootScope, $window) {
+  .run(function ($rootScope, $window) {
+    $rootScope.$on('$routeChangeSuccess', function (e, current, pre) {
+      $rootScope.isHide = false;
+      var originPath = current.$$route.originalPath;
+      if (originPath === '/login'
+        || originPath === '/forgot'
+        || originPath === '/order'
+        || originPath === '/signup'
+        || originPath === '/try-product'
+        || originPath === '/reset/:token') {
+        $rootScope.isHide = true;
+      }
+
+      $rootScope.isOrderPage = false;
+      if (originPath === '/order' || originPath === '/try-product') {
+        $rootScope.isOrderPage = true;
+      }
+    });
     if ($window.localStorage.user) {
       $rootScope.currentUser = JSON.parse($window.localStorage.user);
     }

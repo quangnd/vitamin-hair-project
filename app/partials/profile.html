@@ -1,4 +1,4 @@
-<div class="container">
+<div class="container home">
   <div ng-if="messages.error" role="alert" class="text-danger">
     <div ng-repeat="error in messages.error">{{error.msg}}</div>
   </div>
@@ -39,12 +39,12 @@
     <button type="submit">Change Password</button>
   </form>
 
-  <h4>Linked Accounts</h4>
+  <!-- <h4>Linked Accounts</h4>
 
   <p>
     <a href="#" ng-click="unlink('facebook')" ng-if="currentUser.facebook" class="text-danger">Unlink your Facebook account</a>
     <a href="#" ng-click="link('facebook')" ng-if="!currentUser.facebook">Link your Facebook account</a>
-  </p>
+  </p> -->
   <!-- <p>
     <a href="#" ng-click="unlink('google')" ng-if="currentUser.google" class="text-danger">Unlink your Google account</a>
     <a href="#" ng-click="link('google')" ng-if="!currentUser.google">Link your Google account</a>
