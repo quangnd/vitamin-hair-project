@@ -1,5 +1,5 @@
-angular.module('MyApp', ['ngRoute', 'satellizer'])
-  .config(["$routeProvider", "$locationProvider", "$authProvider", function($routeProvider, $locationProvider, $authProvider) {
+angular.module('MyApp', ['ngRoute', 'satellizer', 'angular-loading-bar'])
+  .config(["$routeProvider", "$locationProvider", "$authProvider", function ($routeProvider, $locationProvider, $authProvider) {
     skipIfAuthenticated.$inject = ["$location", "$auth"];
     loginRequired.$inject = ["$location", "$auth"];
     $locationProvider.html5Mode(true);
@@ -37,6 +37,16 @@ angular.module('MyApp', ['ngRoute', 'satellizer'])
         controller: 'ResetCtrl',
         resolve: { skipIfAuthenticated: skipIfAuthenticated }
       })
+      .when('/order', {
+        templateUrl: 'partials/orders/order.html',
+        controller: 'OrderCtrl',
+        resolve: { skipIfAuthenticated: skipIfAuthenticated }
+      })
+      .when('/try-product', {
+        templateUrl: 'partials/orders/tryProduct.html',
+        controller: 'TryProductCtrl',
+        resolve: { skipIfAuthenticated: skipIfAuthenticated }
+      })
       .otherwise({
         templateUrl: 'partials/404.html'
       });
@@ -65,7 +75,24 @@ angular.module('MyApp', ['ngRoute', 'satellizer'])
       }
     }
   }])
-  .run(["$rootScope", "$window", function($rootScope, $window) {
+  .run(["$rootScope", "$window", function ($rootScope, $window) {
+    $rootScope.$on('$routeChangeSuccess', function (e, current, pre) {
+      $rootScope.isHide = false;
+      var originPath = current.$$route.originalPath;
+      if (originPath === '/login'
+        || originPath === '/forgot'
+        || originPath === '/order'
+        || originPath === '/signup'
+        || originPath === '/try-product'
+        || originPath === '/reset/:token') {
+        $rootScope.isHide = true;
+      }
+
+      $rootScope.isOrderPage = false;
+      if (originPath === '/order' || originPath === '/try-product') {
+        $rootScope.isOrderPage = true;
+      }
+    });
     if ($window.localStorage.user) {
       $rootScope.currentUser = JSON.parse($window.localStorage.user);
     }
@@ -89,6 +116,11 @@ angular.module('MyApp')
   }]);
 
 angular.module('MyApp')
+.controller('FooterCtrl', ["$scope", "CommonUI", function($scope, CommonUI) {
+
+}]);
+
+angular.module('MyApp')
   .controller('ForgotCtrl', ["$scope", "Account", function($scope, Account) {
     $scope.forgotPassword = function() {
       Account.forgotPassword($scope.user)
@@ -106,15 +138,15 @@ angular.module('MyApp')
   }]);
 
 angular.module('MyApp')
-  .controller('HeaderCtrl', ["$scope", "$location", "$window", "$auth", function($scope, $location, $window, $auth) {
+  .controller('HeaderCtrl', ["$scope", "$location", "$window", "$auth", "$rootScope", function($scope, $location, $window, $auth, $rootScope) {
     $scope.isActive = function (viewLocation) {
       return viewLocation === $location.path();
     };
-    
+
     $scope.isAuthenticated = function() {
       return $auth.isAuthenticated();
     };
-    
+
     $scope.logout = function() {
       $auth.logout();
       delete $window.localStorage.user;
@@ -158,6 +190,11 @@ angular.module('MyApp')
         });
     };
   }]);
+
+angular.module('MyApp')
+.controller('OrderCtrl', ["$scope", function($scope) {
+
+}]);
 
 angular.module('MyApp')
   .controller('ProfileCtrl', ["$scope", "$rootScope", "$location", "$window", "$auth", "Account", function($scope, $rootScope, $location, $window, $auth, Account) {
@@ -291,6 +328,11 @@ angular.module('MyApp')
   }]); 
 
 angular.module('MyApp')
+.controller('TryProductCtrl', ["$scope", function($scope) {
+
+}]);
+
+angular.module('MyApp')
   .factory('Account', ["$http", function($http) {
     return {
       updateProfile: function(data) {
@@ -310,6 +352,15 @@ angular.module('MyApp')
       }
     };
   }]);
+angular.module('MyApp')
+.factory('CommonUI', ["$location", function($location) {
+  return {
+    isLoginPage: function() {
+      return $location.path() === '/login';
+    }
+  };
+}]);
+
 angular.module('MyApp')
   .factory('Contact', ["$http", function($http) {
     return {
