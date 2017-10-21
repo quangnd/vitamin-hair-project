@@ -260,15 +260,22 @@ exports.resetPost = function(req, res, next) {
           if (!user) {
           return res.status(400).send({ msg: 'Password reset token is invalid or has expired.' });
           }
+
+          var data = {
+            password: req.body.password,
+            passwordResetToken: null,
+            passwordResetExpires: null
+          }
           user.set('password', req.body.password);
           user.set('passwordResetToken', null);
           user.set('passwordResetExpires', null);
           user.save(user.changed, { patch: true }).then(function() {
-          done(err, user.toJSON());
+          done(null, user.toJSON());
           });
         });
     },
     function(user, done) {
+      console.log('vao day roi nhe');
       var transporter = nodemailer.createTransport({
         service: 'Mailgun',
         auth: {

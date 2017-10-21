@@ -18,6 +18,7 @@ var User = require('./models/User');
 // Controllers
 var userController = require('./controllers/user');
 var contactController = require('./controllers/contact');
+var orderController = require('./controllers/order');
 
 var app = express();
 
@@ -71,6 +72,10 @@ app.post('/auth/facebook', userController.authFacebook);
 app.get('/auth/facebook/callback', userController.authFacebookCallback);
 app.post('/auth/google', userController.authGoogle);
 app.get('/auth/google/callback', userController.authGoogleCallback);
+
+app.post('/api/order', userController.ensureAuthenticated, orderController.orderProduct);
+app.get('/api/order/:user_id', userController.ensureAuthenticated, orderController.getByUserId);
+app.get('/api/order/listall', userController.ensureAuthenticated, orderController.getListAll);
 
 app.get('/', function(req, res) {
   res.sendFile(path.join(__dirname, 'app', 'index.html'));
