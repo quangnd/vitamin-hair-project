@@ -2,6 +2,7 @@ var Product = require('../models/Product');
 var Order = require('../models/Order');
 var OrderDetail = require('../models/OrderDetail');
 var OrderAddress = require('../models/OrderAddress');
+var cityList = require('../models/City');
 
 exports.orderProduct = function(req, res, next) {
   req.assert('user_id', 'User is required').notEmpty();
@@ -83,4 +84,8 @@ exports.getByUserId = function(req, res, next) {
     .catch(function(err) {
       return res.status(401).send(err);
     })
+}
+
+exports.getListCity = function(req, res, next) {
+  return res.send ( {data: cityList.cityList} );
 }

@@ -76,6 +76,7 @@ app.get('/auth/google/callback', userController.authGoogleCallback);
 app.post('/api/order', userController.ensureAuthenticated, orderController.orderProduct);
 app.get('/api/order/:user_id', userController.ensureAuthenticated, orderController.getByUserId);
 app.get('/api/order/listall', userController.ensureAuthenticated, orderController.getListAll);
+app.get('/api/city', orderController.getListCity);
 
 app.get('/', function(req, res) {
   res.sendFile(path.join(__dirname, 'app', 'index.html'));
