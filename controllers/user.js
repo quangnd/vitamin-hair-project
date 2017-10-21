@@ -250,10 +250,9 @@ exports.resetPost = function(req, res, next) {
   if (errors) {
       return res.status(400).send(errors);
   }
-
   async.waterfall([
     function(done) {
-      new User({ passwordResetToken: req.params.token })
+      new User({ passwordResetToken: req.body.token })
         .where('passwordResetExpires', '>', new Date())
         .fetch()
         .then(function(user) {
@@ -275,7 +274,6 @@ exports.resetPost = function(req, res, next) {
         });
     },
     function(user, done) {
-      console.log('vao day roi nhe');
       var transporter = nodemailer.createTransport({
         service: 'Mailgun',
         auth: {

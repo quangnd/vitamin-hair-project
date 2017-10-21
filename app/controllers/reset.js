@@ -1,6 +1,7 @@
 angular.module('MyApp')
-  .controller('ResetCtrl', function($scope, Account) {
+  .controller('ResetCtrl', function($scope, Account, $routeParams) {
     $scope.resetPassword = function() {
+      $scope.user.token = $routeParams.token;
       Account.resetPassword($scope.user)
         .then(function(response) {
           $scope.messages = {

@@ -66,13 +66,12 @@ app.delete('/account', userController.ensureAuthenticated, userController.accoun
 app.post('/signup', userController.signupPost);
 app.post('/login', userController.loginPost);
 app.post('/forgot', userController.forgotPost);
-app.post('/reset/:token', userController.resetPost);
+app.post('/reset', userController.resetPost);
 app.get('/unlink/:provider', userController.ensureAuthenticated, userController.unlink);
 app.post('/auth/facebook', userController.authFacebook);
 app.get('/auth/facebook/callback', userController.authFacebookCallback);
 app.post('/auth/google', userController.authGoogle);
 app.get('/auth/google/callback', userController.authGoogleCallback);
-
 app.post('/api/order', userController.ensureAuthenticated, orderController.orderProduct);
 app.get('/api/order/:user_id', userController.ensureAuthenticated, orderController.getByUserId);
 app.get('/api/order/listall', userController.ensureAuthenticated, orderController.getListAll);
