@@ -1,25 +1,26 @@
-<div class="container">
-  <div ng-if="messages.error" role="alert" class="text-danger">
-    <div ng-repeat="error in messages.error">{{error.msg}}</div>
+<main class="main-content">
+  <div class="container">
+    <h3 class="h2 text-center fwb mb-2">Đăng nhập</h3>
+    <div class="row justify-content-center">
+      <div class="col-4 width395 p-0">
+        <div ng-if="messages.error" role="alert" class="text-danger mb-3">
+          <div ng-repeat="error in messages.error">{{error.msg}}</div>
+        </div>
+        <form ng-submit="login()">
+          <div class="form-group">
+            <input type="text" name="email" id="email" ng-model="user.email" autofocus placeholder="Email hoặc số điện thoại" class="form-control">
+          </div>
+          <div class="form-group">
+            <input type="password" name="password" id="password" ng-model="user.password" placeholder="Mật khẩu" class="form-control">
+          </div>
+          <div class="form-group">
+            <button type="submit" class="form-btn btn btn-primary btn-lg btn-block">Đăng nhập</button>
+          </div>
+          <div class="text-center">
+            <a href="/forgot">Quên mật khẩu</a>
+          </div>
+        </form>
+      </div>
+    </div>
   </div>
-
-  <h4>Log In</h4>
-
-  <form ng-submit="login()">
-    <label for="email">Email</label>
-    <input type="email" name="email" id="email" placeholder="Email" ng-model="user.email" autofocus>
-    <label for="password">Password</label>
-    <input type="password" name="password" id="password" placeholder="Password" ng-model="user.password">
-    <p><a href="/forgot">Forgot your password?</a></p>
-    <button type="submit">Log in</button>
-  </form>
-
-  <hr>
-
-  <button ng-click="authenticate('facebook')">Sign in with Facebook</button>
-  <!-- <br>
-  <button ng-click="authenticate('google')">Sign in with Google</button>
-  <br> -->
-
-  <p>Don't have an account? <a href="/signup">Sign up</a></p>
-</div>
+</main>

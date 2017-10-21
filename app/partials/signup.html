@@ -1,5 +1,43 @@
-<div class="container">
-  <div ng-if="messages.error" role="alert" class="text-danger">
+<main class="main-content">
+  <div class="cbontainer">
+    <h3 class="h2 text-center fwb mb-2">Đăng ký tài khoản</h3>
+    <div class="row justify-content-center">
+      <div class="col-4 width395 p-0">
+        <div ng-if="messages.error" role="alert" class="text-danger mb-3">
+          <div ng-repeat="error in messages.error">{{error.msg}}</div>
+        </div>
+        <form ng-submit="signup()">
+          <div class="form-group">
+            <input type="text" name="name" id="name" placeholder="Họ tên" ng-model="user.name" class="form-control">
+          </div>
+          <div class="form-group">
+            <input type="text" name="email" id="email" ng-model="user.email" autofocus placeholder="Email hoặc số điện thoại" class="form-control">
+          </div>
+          <div class="form-group">
+            <input type="password" name="password" id="password" ng-model="user.password" placeholder="Mật khẩu" class="form-control">
+          </div>
+          <div class="form-group">
+            <input type="text" name="phone_number" id="phone_number" placeholder="Số điện thoại" ng-model="user.phone_number" class="form-control">
+          </div>
+          <div class="form-group">
+            <button type="submit" class="form-btn btn btn-primary btn-lg btn-block">Đăng ký</button>
+          </div>
+          <div class="text-center">
+            Already have an account?
+            <a href="/login">Đăng nhập</a>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</main>
+
+
+
+
+
+<!-- <div class="container">
+  <div ng-if="messages.error" role="alert" class="btext-danger">
     <div ng-repeat="error in messages.error">{{error.msg}}</div>
   </div>
 
@@ -26,4 +64,4 @@
   <br>
 
   <p>Already have an account? <a href="/login">Log in</a></p>
-</div>
+</div> -->
