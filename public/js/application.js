@@ -273,8 +273,9 @@ angular.module('MyApp')
     };
   }]);
 angular.module('MyApp')
-  .controller('ResetCtrl', ["$scope", "Account", function($scope, Account) {
+  .controller('ResetCtrl', ["$scope", "Account", "$routeParams", function($scope, Account, $routeParams) {
     $scope.resetPassword = function() {
+      $scope.user.token = $routeParams.token;
       Account.resetPassword($scope.user)
         .then(function(response) {
           $scope.messages = {
@@ -352,6 +353,7 @@ angular.module('MyApp')
       }
     };
   }]);
+
 angular.module('MyApp')
 .factory('CommonUI', ["$location", function($location) {
   return {
