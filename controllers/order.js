@@ -55,7 +55,7 @@ exports.orderProduct = function(req, res, next) {
               return res.status(401).send(err);
             })
 
-          var orderDetailParams = data.product_list.map(result => {
+          var orderDetailParams = data.product_list.map(function(result) {
             result.order_id = order.id;
             new OrderDetail(result)
               .save()
@@ -82,8 +82,7 @@ exports.getListAll = function(req, res, next) {
     .orderBy('created_at', 'desc')
     .fetchAll({ withRelated: ['user'] })
     .then(function(orders) {
-
-      return res.send({ orders });
+      return res.send({ orders: orders });
     })
     .catch(function(err) {
       return res.status(401).send(err);
@@ -99,7 +98,7 @@ exports.getByUserId = function(req, res, next) {
     .where('user_id', req.params.user_id)
     .fetchAll()
     .then(function(orders) {
-      return res.send({ orders });
+      return res.send({ orders: orders });
     })
     .catch(function(err) {
       return res.status(401).send(err);

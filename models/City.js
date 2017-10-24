@@ -1,4 +1,4 @@
-const cityList = [
+var cityList = [
   {
     "city": "An Giang",
     "provincies": [

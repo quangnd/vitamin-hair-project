@@ -326,7 +326,7 @@ angular.module('MyApp')
           }
         });
     };
-  }]); 
+  }]);
 
 angular.module('MyApp')
 .controller('TryProductCtrl', ["$scope", function($scope) {

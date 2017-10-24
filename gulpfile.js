@@ -44,7 +44,6 @@ gulp.task('vendor', function () {
     .pipe(gulp.dest('public/js/lib'));
 });
 
-
 gulp.task('watch',['angular','templates', 'sass'], function () {
   livereload.listen();
   gulp.watch('app/assets/styles/**/*.scss', ['sass']);
@@ -64,4 +63,4 @@ gulp.task('server', function () {
 
 gulp.task('build', ['angular', 'vendor', 'templates']);
 gulp.task('default', ['build', 'watch']);
-gulp.task('serve', ['default','server']);
+gulp.task('serve', ['default', 'server']);

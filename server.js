@@ -88,13 +88,15 @@ app.get('*', function(req, res) {
 // Production error handler
 if (app.get('env') === 'production') {
   app.use(function(err, req, res, next) {
-    console.error(err.stack);
+    console.error(err.stack);  // eslint-disable-line no-console
     res.sendStatus(err.status || 500);
   });
 }
 
 app.listen(app.get('port'), function() {
-  console.log('Express server listening on port ' + app.get('port'));
+  console.log('----------------------------------------');            // eslint-disable-line no-console
+  console.log('Express server listening on port ' + app.get('port')); // eslint-disable-line no-console
+  console.log('----------------------------------------');            // eslint-disable-line no-console
 });
 
 module.exports = app;
