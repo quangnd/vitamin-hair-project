@@ -37,13 +37,11 @@ angular.module('MyApp', ['ngRoute', 'satellizer', 'angular-loading-bar'])
       })
       .when('/order', {
         templateUrl: 'partials/orders/order.html',
-        controller: 'OrderCtrl',
-        resolve: { skipIfAuthenticated: skipIfAuthenticated }
+        controller: 'OrderCtrl'
       })
       .when('/try-product', {
         templateUrl: 'partials/orders/tryProduct.html',
-        controller: 'TryProductCtrl',
-        resolve: { skipIfAuthenticated: skipIfAuthenticated }
+        controller: 'TryProductCtrl'
       })
       .otherwise({
         templateUrl: 'partials/404.html'
