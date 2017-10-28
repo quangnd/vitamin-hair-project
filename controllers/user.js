@@ -7,6 +7,7 @@ var request = require('request');
 var qs = require('querystring');
 var shortid = require('shortid');
 var User = require('../models/User');
+var common = require('../utilities/commons');
 
 function generateToken(user) {
   var payload = {
@@ -28,38 +29,45 @@ exports.ensureAuthenticated = function(req, res, next) {
     res.status(401).send({ msg: 'Unauthorized' });
   }
 };
-  /**
-   * POST /login
-   * Sign in with email and password
-   */
-  exports.loginPost = function(req, res, next) {
-    req.assert('email', 'Email is not valid').isEmail();
-    req.assert('email', 'Email cannot be blank').notEmpty();
-    req.assert('password', 'Password cannot be blank').notEmpty();
-    req.sanitize('email').normalizeEmail({ remove_dots: false });
 
-    var errors = req.validationErrors();
+/**
+ * POST /login
+ * Sign in with email and password
+ */
+exports.loginPost = function(req, res, next) {
+  req.assert('username', 'Email or phone number cannot be blank').notEmpty();
+  req.assert('password', 'Password cannot be blank').notEmpty();
+  // req.sanitize('email').normalizeEmail({ remove_dots: false });
 
-    if (errors) {
-      return res.status(400).send(errors);
+  var errors = req.validationErrors();
+
+  if (errors) {
+    return res.status(400).send(errors);
+  }
+
+  if(req.body.username) {
+    if(!common.checkUsername(req.body.username)) {
+      return res.status(400).send({ msg: 'Email or phone number is not valid.' });
     }
+  }
 
-    new User({ email: req.body.email })
-      .fetch()
-      .then(function(user) {
-        if (!user) {
-          return res.status(401).send({ msg: 'The email address ' + req.body.email + ' is not associated with any account. ' +
-          'Double-check your email address and try again.'
-          });
-        }
-        user.comparePassword(req.body.password, function(err, isMatch) {
-          if (!isMatch) {
-            return res.status(401).send({ msg: 'Invalid email or password' });
-          }
-          res.send({ token: generateToken(user), user: user.toJSON() });
+  new User()
+    .query({where: {email: req.body.username}, orWhere: {phone_number: req.body.username}})
+    .fetch()
+    .then(function(user) {
+      if (!user) {
+        return res.status(401).send({ msg: 'The email address or phone number ' + req.body.username + ' is not associated with any account. ' +
+        'Please check email or phone number and try again.'
         });
+      }
+      user.comparePassword(req.body.password, function(err, isMatch) {
+        if (!isMatch) {
+          return res.status(401).send({ msg: 'The password does not match this email or phone number' });
+        }
+        res.send({ token: generateToken(user), user: user.toJSON() });
       });
-  };
+    });
+};
 
 /**
  * POST /signup
@@ -454,3 +462,5 @@ exports.authGoogle = function(req, res) {
 exports.authGoogleCallback = function(req, res) {
   res.send('Loading...');
 };
+
+exports.checkEmail

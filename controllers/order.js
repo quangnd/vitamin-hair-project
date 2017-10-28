@@ -4,6 +4,9 @@ var OrderDetail = require('../models/OrderDetail');
 var OrderAddress = require('../models/OrderAddress');
 var cityList = require('../models/City');
 var async = require('async');
+var config = require('../knexfile');
+var knex = require('knex')(config);
+
 /**
  * method: POST
  * url: api/order
@@ -132,12 +135,19 @@ exports.getListAll = function(req, res, next) {
 }
 
 /**
- *
+ * /GET /order/:user_id
  */
 exports.getByUserId = function(req, res, next) {
   req.assert('user_id', 'User id is required').notEmpty();
   new Order()
-    .where('user_id', req.params.user_id)
+    .query(function (qb) {
+      qb.select(knex.raw('orders.id, orders.user_id, orders.created_at, sum(products.price*order_details.quality) as total_price, orders.status')) //'orders.id', 'orders.user_id', 'orders.created_at','products.price', '*' ,'order_details.quality', 'orders.status')
+        .leftJoin('order_details', 'order_details.order_id', 'orders.id')
+        .leftJoin('products', 'products.id', 'order_details.product_id')
+        .where('orders.user_id', req.params.user_id)
+        .groupBy('orders.id')
+        .orderBy('orders.id', 'desc')
+    })
     .fetchAll()
     .then(function(orders) {
       return res.send({ orders: orders });
