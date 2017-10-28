@@ -76,6 +76,7 @@ exports.signupPost = function(req, res, next) {
   req.assert('name', 'Name cannot be blank').notEmpty();
   req.assert('email', 'Email is not valid').isEmail();
   req.assert('email', 'Email cannot be blank').notEmpty();
+  req.assert('phone_number', 'Phone number cannot be blank').notEmpty();
   req.assert('password', 'Password must be at least 4 characters long').len(4);
   req.sanitize('email').normalizeEmail({ remove_dots: false });
 
@@ -83,6 +84,10 @@ exports.signupPost = function(req, res, next) {
 
   if (errors) {
     return res.status(400).send(errors);
+  }
+
+  if(!common.checkPhoneFormat(req.body.phone_number)) {
+    return res.status(400).send({ msg: 'Phone number is not valid.' });
   }
 
   new User({
@@ -97,7 +102,7 @@ exports.signupPost = function(req, res, next) {
     })
     .catch(function(err) {
       if (err.code === 'ER_DUP_ENTRY' || err.code === '23505') {
-        return res.status(400).send({ msg: 'The email address you have entered is already associated with another account.' });
+        return res.status(400).send({ msg: 'The email address or phone number you have entered is already associated with another account.' });
       }
     });
 };
@@ -463,4 +468,15 @@ exports.authGoogleCallback = function(req, res) {
   res.send('Loading...');
 };
 
-exports.checkEmail
+exports.checkEmailPhone = function(req, res) {
+  new User()
+    .query({ where: {email: req.body.username}, orWhere: {phone_number: req.body.username}})
+    .count()
+    .then(function(result) {
+      return res.send({ isFound: result })
+    })
+    .catch(function(err) {
+      return res.status(401).send(err);
+    })
+
+}
