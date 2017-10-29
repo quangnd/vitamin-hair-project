@@ -67,6 +67,7 @@ app.post('/signup', userController.signupPost);
 app.post('/login', userController.loginPost);
 app.post('/forgot', userController.forgotPost);
 app.post('/reset', userController.resetPost);
+app.post('/checkUserIdentify', userController.checkEmailPhone);
 app.get('/unlink/:provider', userController.ensureAuthenticated, userController.unlink);
 app.post('/auth/facebook', userController.authFacebook);
 app.get('/auth/facebook/callback', userController.authFacebookCallback);

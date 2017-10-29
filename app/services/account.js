@@ -15,6 +15,9 @@ angular.module('MyApp')
       },
       resetPassword: function(data) {
         return $http.post('/reset', data);
+      },
+      checkUserIdentify: function(data) {
+        return $http.post('/checkUserIdentify', data);
       }
     };
   });
