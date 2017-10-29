@@ -28,33 +28,28 @@
               </div>
               <div class="form-group">
                 <input type="text" id="name" name="name" ng-model="newUser.name" placeholder="Họ và tên" class="form-control" required>
-                <span ng-show="orderForm.$submitted && orderForm.name.$invalid" class="error-message">Tell us your full name</span>
+                <span ng-show="orderForm.$submitted && orderForm.name.$invalid" class="error-message">Bạn phải nhập đủ họ tên</span>
               </div>
               <div class="form-group">
-                <input type="text" name="phone_number" id="phone_number" ng-model="newUser.phone_number" phone_number_existed placeholder="Số điện thoại" class="form-control" required>
+                <input type="text" name="phone_number" id="phone_number" ng-model="newUser.phone_number" ng-blur="checkUserIdentity('phone')"
+                ng-minlength="10" ng-maxlength="11" placeholder="Số điện thoại" class="form-control" required>
                 <div ng-show="orderForm.$submitted || orderForm.phone_number.$touched">
-                  <span ng-show="orderForm.phone_number.$error.required" class="error-message">Tell us your phone number</span>
+                  <span ng-show="orderForm.phone_number.$error.required" class="error-message">Bạn phải nhập số điện thoại</span>
+                  <span ng-show="((orderForm.phone_number.$error.minlength || orderForm.phone_number.$error.maxlength) && orderForm.phone_number.$dirty)" class="error-message">Số điện thoại phải từ 10 số</span>
+                  <span ng-show="phoneExisted" class="error-message">Số điện thoại này đã tồn tại</span>
                 </div>
-                <span ng-show="orderForm.phone_number.$pending.phone_number_existed">Checking if this phone number is available...</span>
-                <span ng-show="orderForm.phone_number.$error.phone_number_existed" class="error-message">The phone_number has already taken</span>
               </div>
-              <!-- <div>
-                  <label>
-                  Username:
-                  <input type="text" ng-model="name" name="name" username /></label><br />
-                  <span ng-show="orderForm.name.$pending.username">Checking if this name is available...</span>
-                  <span ng-show="orderForm.name.$error.username">This username is already taken!</span>
-                </div> -->
               <div class="form-group">
-                <input type="email" name="email" id="email" ng-model="newUser.email" placeholder="Email" class="form-control" required>
+                <input type="email" name="email" id="email" ng-model="newUser.email" placeholder="Email" class="form-control" ng-blur="checkUserIdentity('email')" required>
                 <div ng-show="orderForm.$submitted || orderForm.email.$touched">
-                  <span ng-show="orderForm.email.$error.required" class="error-message">Tell us your email.</span>
-                  <span ng-show="orderForm.email.$error.email" class="error-message">This is not a valid email.</span>
+                  <span ng-show="orderForm.email.$error.required" class="error-message">Bạn phải nhập email.</span>
+                  <span ng-show="orderForm.email.$error.email" class="error-message">Email không đúng định dạng.</span>
+                  <span ng-show="emailExisted" class="error-message">Email này đã tồn tại</span>
                 </div>
               </div>
               <div class="form-group mb-2">
                 <input type="password" name="password" id="password" ng-model="newUser.password" placeholder="Mật khẩu với ít nhất 6 ký tự" class="form-control" required>
-                <span ng-show="orderForm.password.$touched && orderForm.password.$invalid" class="error-message">Tell us your password</span>
+                <span ng-show="orderForm.password.$touched && orderForm.password.$invalid" class="error-message">Bạn phải nhập mật khẩu</span>
               </div>
               <p class="p mb-0 fz12">Hãy ghi nhớ mật khẩu để thuận tiện cho lần đăng nhập sau</p>
             </div>
@@ -162,7 +157,7 @@
                 </tr>
               </tfoot>
             </table>
-            <button type="submit" class="form-btn btn btn-primary btn-lg btn-block">Đặt dùng thử</button>
+            <button type="submit" ng-disabled="inProcessing" class="form-btn btn btn-primary btn-lg btn-block">Đặt dùng thử</button>
             <p class="p mt-3 mb-3 fz12">Vui lòng thanh toán cho nhân viên giao hàng khi nhận </p>
           </div>
           <div class="form mb-3">
