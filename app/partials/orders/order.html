@@ -28,28 +28,28 @@
               </div>
               <div class="form-group">
                 <input type="text" id="name" name="name" ng-model="newUser.name" placeholder="Họ và tên" class="form-control" required>
-                <span ng-show="orderForm.$submitted && orderForm.name.$invalid" class="error-message">Tell us your full name</span>
+                <span ng-show="orderForm.$submitted && orderForm.name.$invalid" class="error-message">Bạn phải nhập đủ họ tên</span>
               </div>
               <div class="form-group">
                 <input type="text" name="phone_number" id="phone_number" ng-model="newUser.phone_number" ng-blur="checkUserIdentity('phone')"
-                ng-minlength="10" ng-maxlength="10" placeholder="Số điện thoại" class="form-control" required>
+                ng-minlength="10" ng-maxlength="11" placeholder="Số điện thoại" class="form-control" required>
                 <div ng-show="orderForm.$submitted || orderForm.phone_number.$touched">
-                  <span ng-show="orderForm.phone_number.$error.required" class="error-message">Tell us your phone number</span>
-                  <span ng-show="((orderForm.phone_number.$error.minlength || orderForm.phone_number.$error.maxlength) && orderForm.phone_number.$dirty)" class="error-message">phone number should be 10 digits</span>
-                  <span ng-show="phoneExisted" class="error-message">Phone number is existed</span>
+                  <span ng-show="orderForm.phone_number.$error.required" class="error-message">Bạn phải nhập số điện thoại</span>
+                  <span ng-show="((orderForm.phone_number.$error.minlength || orderForm.phone_number.$error.maxlength) && orderForm.phone_number.$dirty)" class="error-message">Số điện thoại phải từ 10 số</span>
+                  <span ng-show="phoneExisted" class="error-message">Số điện thoại này đã tồn tại</span>
                 </div>
               </div>
               <div class="form-group">
                 <input type="email" name="email" id="email" ng-model="newUser.email" placeholder="Email" class="form-control" ng-blur="checkUserIdentity('email')" required>
                 <div ng-show="orderForm.$submitted || orderForm.email.$touched">
-                  <span ng-show="orderForm.email.$error.required" class="error-message">Tell us your email.</span>
-                  <span ng-show="orderForm.email.$error.email" class="error-message">This is not a valid email.</span>
-                  <span ng-show="emailExisted" class="error-message">This email is existed</span>
+                  <span ng-show="orderForm.email.$error.required" class="error-message">Bạn phải nhập email.</span>
+                  <span ng-show="orderForm.email.$error.email" class="error-message">Email không đúng định dạng</span>
+                  <span ng-show="emailExisted" class="error-message">Email này đã tồn tại</span>
                 </div>
               </div>
               <div class="form-group mb-2">
                 <input type="password" name="password" id="password" ng-model="newUser.password" placeholder="Mật khẩu với ít nhất 6 ký tự" class="form-control" required>
-                <span ng-show="orderForm.password.$touched && orderForm.password.$invalid" class="error-message">Tell us your password</span>
+                <span ng-show="orderForm.password.$touched && orderForm.password.$invalid" class="error-message">Bạn phải nhập mật khẩu</span>
               </div>
               <p class="p mb-0 fz12">Hãy ghi nhớ mật khẩu để thuận tiện cho lần đăng nhập sau</p>
             </div>
@@ -74,22 +74,12 @@
                   <select name="city" id="city" ng-model="selectedCity" ng-options="city.name for city in cities" ng-change="getDistricts(selectedCity)"
                     class="form-control">
                   </select>
-                  <!-- <select name="" id="" class="form-control">
-                    <option value="" selected='' disabled="">Tỉnh/TP</option>
-                    <option value="">Hà Nội</option>
-                    <option value="">Hà Tây</option>
-                  </select> -->
                 </div>
               </div>
               <div class="col form-group">
                 <div class="select-style">
                   <select name="district" id="district" ng-model="selectedDistrict" ng-options="district.name for district in districts" class="form-control">
                   </select>
-                  <!-- <select name="" id="" class="form-control">
-                    <option value="" selected='' disabled="">Quận/Huyện</option>
-                    <option value="">Cầu Giấy</option>
-                    <option value="">Ba Đình</option>
-                  </select> -->
                 </div>
               </div>
             </div>
@@ -98,30 +88,9 @@
                 class="form-control" required>
               <span ng-show="orderForm.$submitted && orderForm.orderAddress.$invalid" class="error-message">Bạn phải nhập địa chỉ nhận hàng</span>
             </div>
-            <!-- <div class="form-group">
-              <div class="form-group">
-                <div class="select-style">
-                  <select name="" id="" class="form-control">
-                    <option value="" selected='' disabled="">Tỉnh/TP</option>
-                    <option value="">Hà Nội</option>
-                    <option value="">Hà Tây</option>
-                  </select>
-                </div>
-              </div>
-              <div class="form-group">
-                <div class="select-style">
-                  <select name="" id="" class="form-control">
-                    <option value="" selected='' disabled="">Quận/Huyện</option>
-                    <option value="">Cầu Giấy</option>
-                    <option value="">Ba Đình</option>
-                  </select>
-                </div>
-              </div>
-            </div> -->
             <div class="form-group mb-2">
               <textarea name="orderNote" id="orderNote" ng-model="orderNote" rows="2" class="form-control"  placeholder="Ghi chú thêm (Không bắt buộc)"></textarea>
             </div>
-
             <p class="p fz12">Vui lòng kiểm tra kỹ thông tin trước khi đặt dùng thử.</p>
           </div>
         </div>
