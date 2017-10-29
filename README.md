@@ -1,7 +1,7 @@
 ## Install
 
 - Install packages: `npm install`
-- Run: `gulp serve` (*Note: Only backend code and CSS Code is auto refresh. Frontend code NOT auto refresh after change - On processing*)
+- Run: `npm run dev` (*Note: Only backend code and CSS Code is auto refresh. Frontend code NOT auto refresh after change - On processing*)
 - Build: `npm run build`
 - To setup mysql database, rename *env_example* to *.env* and change the values.
 

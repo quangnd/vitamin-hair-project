@@ -7,8 +7,10 @@ var request = require('request');
 var qs = require('querystring');
 var shortid = require('shortid');
 var User = require('../models/User');
+var common = require('../utilities/commons');
 
 function generateToken(user) {
+  //TODO Replace iss value when release
   var payload = {
     iss: 'my.domain.com1',
     sub: user.id,
@@ -28,38 +30,45 @@ exports.ensureAuthenticated = function(req, res, next) {
     res.status(401).send({ msg: 'Unauthorized' });
   }
 };
-  /**
-   * POST /login
-   * Sign in with email and password
-   */
-  exports.loginPost = function(req, res, next) {
-    req.assert('email', 'Email is not valid').isEmail();
-    req.assert('email', 'Email cannot be blank').notEmpty();
-    req.assert('password', 'Password cannot be blank').notEmpty();
-    req.sanitize('email').normalizeEmail({ remove_dots: false });
 
-    var errors = req.validationErrors();
+/**
+ * POST /login
+ * Sign in with email and password
+ */
+exports.loginPost = function(req, res, next) {
+  req.assert('username', 'Email or phone number cannot be blank').notEmpty();
+  req.assert('password', 'Password cannot be blank').notEmpty();
+  // req.sanitize('email').normalizeEmail({ remove_dots: false });
 
-    if (errors) {
-      return res.status(400).send(errors);
+  var errors = req.validationErrors();
+
+  if (errors) {
+    return res.status(400).send(errors);
+  }
+
+  if(req.body.username) {
+    if(!common.checkUsername(req.body.username)) {
+      return res.status(400).send({ msg: 'Email or phone number is not valid.' });
     }
+  }
 
-    new User({ email: req.body.email })
-      .fetch()
-      .then(function(user) {
-        if (!user) {
-          return res.status(401).send({ msg: 'The email address ' + req.body.email + ' is not associated with any account. ' +
-          'Double-check your email address and try again.'
-          });
-        }
-        user.comparePassword(req.body.password, function(err, isMatch) {
-          if (!isMatch) {
-            return res.status(401).send({ msg: 'Invalid email or password' });
-          }
-          res.send({ token: generateToken(user), user: user.toJSON() });
+  new User()
+    .query({where: {email: req.body.username}, orWhere: {phone_number: req.body.username}})
+    .fetch()
+    .then(function(user) {
+      if (!user) {
+        return res.status(401).send({ msg: 'The email address or phone number ' + req.body.username + ' is not associated with any account. ' +
+        'Please check email or phone number and try again.'
         });
+      }
+      user.comparePassword(req.body.password, function(err, isMatch) {
+        if (!isMatch) {
+          return res.status(401).send({ msg: 'The password does not match this email or phone number' });
+        }
+        res.send({ token: generateToken(user), user: user.toJSON() });
       });
-  };
+    });
+};
 
 /**
  * POST /signup
@@ -68,6 +77,7 @@ exports.signupPost = function(req, res, next) {
   req.assert('name', 'Name cannot be blank').notEmpty();
   req.assert('email', 'Email is not valid').isEmail();
   req.assert('email', 'Email cannot be blank').notEmpty();
+  req.assert('phone_number', 'Phone number cannot be blank').notEmpty();
   req.assert('password', 'Password must be at least 4 characters long').len(4);
   req.sanitize('email').normalizeEmail({ remove_dots: false });
 
@@ -75,6 +85,10 @@ exports.signupPost = function(req, res, next) {
 
   if (errors) {
     return res.status(400).send(errors);
+  }
+
+  if(!common.checkPhoneFormat(req.body.phone_number)) {
+    return res.status(400).send({ msg: 'Phone number is not valid.' });
   }
 
   new User({
@@ -89,7 +103,7 @@ exports.signupPost = function(req, res, next) {
     })
     .catch(function(err) {
       if (err.code === 'ER_DUP_ENTRY' || err.code === '23505') {
-        return res.status(400).send({ msg: 'The email address you have entered is already associated with another account.' });
+        return res.status(400).send({ msg: 'The email address or phone number you have entered is already associated with another account.' });
       }
     });
 };
@@ -454,3 +468,16 @@ exports.authGoogle = function(req, res) {
 exports.authGoogleCallback = function(req, res) {
   res.send('Loading...');
 };
+
+exports.checkEmailPhone = function(req, res) {
+  new User()
+    .query({ where: {email: req.body.username}, orWhere: {phone_number: req.body.username}})
+    .count()
+    .then(function(result) {
+      return res.send({ isFound: result })
+    })
+    .catch(function(err) {
+      return res.status(401).send(err);
+    })
+
+}

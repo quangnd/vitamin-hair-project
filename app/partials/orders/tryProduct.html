@@ -14,18 +14,24 @@
         <h3 class="h2 text-center fwb mb-2">Đăng nhập</h3>
         <div class="row justify-content-center">
           <div class="col-4 width395">
-            <div class="form-group">
-              <input type="text" placeholder="Email hoặc số điện thoại" class="form-control">
+            <div ng-if="messages.error" role="alert" class="text-danger mb-3">
+              <div ng-repeat="error in messages.error">{{error.msg}}</div>
             </div>
-            <div class="form-group">
-              <input type="password" placeholder="Mật khẩu" class="form-control">
-            </div>
-            <div class="form-group">
-              <button class="form-btn btn btn-primary btn-lg btn-block">Tiếp tục ></button>
-            </div>
-            <div class="text-center">
-              <a href="/forgot">Quên mật khẩu</a>
-            </div>
+            <form ng-submit="login()">
+              <div class="form-group">
+                <input type="text" name="email" id="email" ng-model="user.email" autofocus placeholder="Email hoặc số điện thoại" class="form-control">
+              </div>
+              <div class="form-group">
+                <input type="password" name="password" id="password" ng-model="user.password" placeholder="Mật khẩu" class="form-control">
+              </div>
+              <div class="form-group">
+                <button type="submit" class="form-btn btn btn-primary btn-lg btn-block">Đăng nhập</button>
+              </div>
+              <div class="text-center">
+                <a href="/forgot">Quên mật khẩu</a>
+              </div>
+            </form>
+          </div>
           </div>
         </div>
       </div>
