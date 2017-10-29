@@ -10,6 +10,7 @@ var User = require('../models/User');
 var common = require('../utilities/commons');
 
 function generateToken(user) {
+  //TODO Replace iss value when release
   var payload = {
     iss: 'my.domain.com1',
     sub: user.id,

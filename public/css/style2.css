@@ -272,6 +272,10 @@ nav.header {
     margin-top: 23px;
     width: 100%; }
   .page-auth .main-content {
-    padding: 78px 0 88px; }
+    padding: 58px 0 58px; }
   .h2 {
     font-size: 21px; } }
+
+/*Add by frontend team - Jon Snow*/
+.error-message {
+  color: red !important; }
