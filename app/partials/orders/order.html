@@ -1,6 +1,6 @@
 <main class="main-content">
   <div class="container" ng-show="!messages.success">
-    <form name="orderForm" ng-submit="createOrder()" novalidate>
+    <form name="orderForm" ng-submit="orderForm.$valid && createOrder()" novalidate>
       <h3 class="h2 text-center fwb mb-5">Chỉ 2 bước là xong. Chúng tôi quý trọng thời gian của bạn.</h3>
       <div ng-if="messages.error" role="alert" class="text-danger mb-3 text-center">
           <div ng-repeat="error in messages.error"><h2>{{error.msg}}</h2></div>

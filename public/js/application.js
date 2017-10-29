@@ -295,7 +295,7 @@ angular.module('MyApp')
     }
   }])
   .directive('username', ["$q", "$timeout", function ($q, $timeout) {
-    console.log('call directive');
+    //console.log('call directive');
     return {
       require: 'ngModel',
       link: function (scope, elm, attrs, ctrl) {
