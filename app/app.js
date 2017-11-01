@@ -1,4 +1,4 @@
-angular.module('MyApp', ['ngRoute', 'satellizer', 'angular-loading-bar'])
+angular.module('MyApp', ['ngRoute', 'satellizer', 'angular-loading-bar', 'ngMap'])
   .config(function ($routeProvider, $locationProvider, $authProvider) {
     $locationProvider.html5Mode(true);
 
@@ -42,6 +42,10 @@ angular.module('MyApp', ['ngRoute', 'satellizer', 'angular-loading-bar'])
       .when('/try-product', {
         templateUrl: 'partials/orders/tryProduct.html',
         controller: 'TryProductCtrl'
+      })
+      .when('/map', {
+        templateUrl: 'partials/maps.html',
+        controller: 'MapCtrl'
       })
       .otherwise({
         templateUrl: 'partials/404.html'
