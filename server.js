@@ -10,22 +10,22 @@ var jwt = require('jsonwebtoken');
 var moment = require('moment');
 var request = require('request');
 
-
-
 // Models
 var User = require('./models/User');
 
-// Controllers
+// Normal Controllers
 var userController = require('./controllers/user');
 var contactController = require('./controllers/contact');
 var orderController = require('./controllers/order');
+
 // Admin Controller
 var adminUserController = require('./controllers/admins/user');
 
 var app = express();
 app.use(function(req, res, next) {
   res.header("Access-Control-Allow-Origin", "*");
-  res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+  res.header("Access-Control-Allow-Methods", "GET,HEAD,OPTIONS,POST,PUT");
+  res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept, Access-Control-Request-Method, Access-Control-Request-Headers, Authorization");
   next();
 });
 
