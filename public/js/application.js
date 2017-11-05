@@ -1,4 +1,4 @@
-angular.module('MyApp', ['ngRoute', 'satellizer', 'angular-loading-bar'])
+angular.module('MyApp', ['ngRoute', 'satellizer', 'angular-loading-bar', 'ngMap'])
   .config(["$routeProvider", "$locationProvider", "$authProvider", function ($routeProvider, $locationProvider, $authProvider) {
     skipIfAuthenticated.$inject = ["$location", "$auth"];
     loginRequired.$inject = ["$location", "$auth"];
@@ -44,6 +44,10 @@ angular.module('MyApp', ['ngRoute', 'satellizer', 'angular-loading-bar'])
       .when('/try-product', {
         templateUrl: 'partials/orders/tryProduct.html',
         controller: 'TryProductCtrl'
+      })
+      .when('/map', {
+        templateUrl: 'partials/maps.html',
+        controller: 'MapCtrl'
       })
       .otherwise({
         templateUrl: 'partials/404.html'
@@ -189,6 +193,17 @@ angular.module('MyApp')
         });
     };
   }]);
+
+angular.module('MyApp')
+.controller('MapCtrl', ["$scope", "NgMap", function($scope, NgMap) {
+  $scope.googleMapsUrl = 'http://maps.google.com/maps/api/js?key=AIzaSyARWC-K1F2vMynM-x6LjIDm-wsa4jwoPi0';
+  //hanoi: [21.0278, 105.8342]
+  NgMap.getMap().then(function(map) {
+    // console.log(map.getCenter());
+    // console.log('markers', map.markers);
+    // console.log('shapes', map.shapes);
+  });
+}]);
 
 angular.module('MyApp')
   .controller('OrderCtrl', ["$scope", "$rootScope", "$location", "$window", "$auth", "Order", "Account", function ($scope, $rootScope, $location, $window, $auth, Order, Account) {

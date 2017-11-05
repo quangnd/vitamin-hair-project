@@ -6,7 +6,7 @@ var cityList = require('../models/City');
 var async = require('async');
 var config = require('../knexfile');
 var knex = require('knex')(config);
-
+var constant = require('../utilities/constants');
 /**
  * method: POST
  * url: api/order
@@ -34,21 +34,25 @@ exports.orderProduct = function(req, res, next) {
         .leftJoin('order_details', 'order_details.order_id', 'orders.id')
         .leftJoin('products', 'products.id', 'order_details.product_id')
         .where('orders.user_id', data.user_id)
-        .where('is_trial', 1)
+        .where('order_details.product_id', constant.PRODUCT_TRIAL_ID)
     })
     .fetch()
     .then(function (result) {
-      if (result) {
-        var isProdTrial = data.product_list.filter(function(product) {
-          return product.product_id === 1;
-        });
-        if (isProdTrial.length && result.toJSON().is_trial) {
-          return res.status(400).send({ msg: 'You has been order product trial. Please don\'t order product trial again ' });
-        }
+      var isProdTrial = data.product_list.filter(function (product) {
+        return product.product_id === constant.PRODUCT_TRIAL_ID;
+      });
+
+      if (isProdTrial.length && result.toJSON().is_trial) {
+        return res.status(400).send({ msg: 'Bạn đã đặt sản phẩm dùng thử rồi. Xin vui lòng không đặt tiếp.' });
       }
+
+      if (isProdTrial.length && result) {
+        return res.status(400).send({ msg: 'Đơn đặt hàng sản phẩm dùng thử của bạn đang được xử lý. Vui lòng không đặt lại và theo dõi trong mục quản lý đơn hàng.' });
+      }
+
       new Order({
         user_id: data.user_id,
-        status: 0
+        status: constant.ORDER_STATUS_PENDING
       })
       .save()
       .then(function (order) {
@@ -109,9 +113,9 @@ exports.orderProduct = function(req, res, next) {
 
               })
 
-            return res.status(401).send({ msg: 'Has some error in process order!' });
+            return res.status(401).send({ msg: 'Đã có vài lỗi trong quá trình xử lý đơn hàng của bạn. Vui lòng thử lại' });
           } else {
-            return res.send({ msg: 'Your order has been successfully placed!' });
+            return res.send({ msg: 'Đơn hàng của bạn đã được đặt thành công. Xin vui lòng theo dõi trạng thái đơn hàng tại mục Quản lý đơn hàng!' });
           }
         })
       })

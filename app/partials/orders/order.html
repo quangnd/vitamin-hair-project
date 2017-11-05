@@ -43,7 +43,7 @@
                 <input type="email" name="email" id="email" ng-model="newUser.email" placeholder="Email" class="form-control" ng-blur="checkUserIdentity('email')" required>
                 <div ng-show="orderForm.$submitted || orderForm.email.$touched">
                   <span ng-show="orderForm.email.$error.required" class="error-message">Bạn phải nhập email.</span>
-                  <span ng-show="orderForm.email.$error.email" class="error-message">Email không đúng định dạng</span>
+                  <span ng-show="orderForm.email.$error.email" class="error-message">Email không đúng định dạng.</span>
                   <span ng-show="emailExisted" class="error-message">Email này đã tồn tại</span>
                 </div>
               </div>
