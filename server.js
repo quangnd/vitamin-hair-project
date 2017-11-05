@@ -10,15 +10,14 @@ var jwt = require('jsonwebtoken');
 var moment = require('moment');
 var request = require('request');
 
-
-
 // Models
 var User = require('./models/User');
 
-// Controllers
+// Normal Controllers
 var userController = require('./controllers/user');
 var contactController = require('./controllers/contact');
 var orderController = require('./controllers/order');
+
 // Admin Controller
 var adminUserController = require('./controllers/admins/user');
 
