@@ -19,6 +19,8 @@ var User = require('./models/User');
 var userController = require('./controllers/user');
 var contactController = require('./controllers/contact');
 var orderController = require('./controllers/order');
+// Admin Controller
+var adminUserController = require('./controllers/admins/user');
 
 var app = express();
 app.use(function(req, res, next) {
@@ -83,6 +85,10 @@ app.post('/api/order', userController.ensureAuthenticated, orderController.order
 app.get('/api/order/:user_id', userController.ensureAuthenticated, orderController.getByUserId);
 app.get('/api/order/listall', userController.ensureAuthenticated, orderController.getListAll);
 app.get('/api/city', orderController.getListCity);
+
+// BEGIN ADMIN ROUTER
+app.post('/admin/login', adminUserController.loginPost);
+// END ADMIN ROUTER
 
 app.get('/', function(req, res) {
   res.sendFile(path.join(__dirname, 'app', 'index.html'));

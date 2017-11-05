@@ -157,6 +157,10 @@ exports.getByUserId = function(req, res, next) {
     })
 }
 
+exports.changeStatusOrderById = function(req, res, next) {
+
+}
+
 exports.getListCity = function(req, res, next) {
   return res.send ( {data: cityList.cityList} );
 }

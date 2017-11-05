@@ -9,17 +9,6 @@ var shortid = require('shortid');
 var User = require('../models/User');
 var common = require('../utilities/commons');
 
-function generateToken(user) {
-  //TODO Replace iss value when release
-  var payload = {
-    iss: 'my.domain.com1',
-    sub: user.id,
-    iat: moment().unix(),
-    exp: moment().add(7, 'days').unix()
-  };
-  return jwt.sign(payload, process.env.TOKEN_SECRET);
-}
-
 /**
  * Login required middleware
  */
@@ -65,7 +54,7 @@ exports.loginPost = function(req, res, next) {
         if (!isMatch) {
           return res.status(401).send({ msg: 'The password does not match this email or phone number' });
         }
-        res.send({ token: generateToken(user), user: user.toJSON() });
+        res.send({ token: common.generateToken(user), user: user.toJSON() });
       });
     });
 };
