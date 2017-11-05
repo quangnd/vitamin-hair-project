@@ -74,22 +74,12 @@
                   <select name="city" id="city" ng-model="selectedCity" ng-options="city.name for city in cities" ng-change="getDistricts(selectedCity)"
                     class="form-control">
                   </select>
-                  <!-- <select name="" id="" class="form-control">
-                    <option value="" selected='' disabled="">Tỉnh/TP</option>
-                    <option value="">Hà Nội</option>
-                    <option value="">Hà Tây</option>
-                  </select> -->
                 </div>
               </div>
               <div class="col form-group">
                 <div class="select-style">
                   <select name="district" id="district" ng-model="selectedDistrict" ng-options="district.name for district in districts" class="form-control">
                   </select>
-                  <!-- <select name="" id="" class="form-control">
-                    <option value="" selected='' disabled="">Quận/Huyện</option>
-                    <option value="">Cầu Giấy</option>
-                    <option value="">Ba Đình</option>
-                  </select> -->
                 </div>
               </div>
             </div>
@@ -98,30 +88,9 @@
                 class="form-control" required>
               <span ng-show="orderForm.$submitted && orderForm.orderAddress.$invalid" class="error-message">Bạn phải nhập địa chỉ nhận hàng</span>
             </div>
-            <!-- <div class="form-group">
-              <div class="form-group">
-                <div class="select-style">
-                  <select name="" id="" class="form-control">
-                    <option value="" selected='' disabled="">Tỉnh/TP</option>
-                    <option value="">Hà Nội</option>
-                    <option value="">Hà Tây</option>
-                  </select>
-                </div>
-              </div>
-              <div class="form-group">
-                <div class="select-style">
-                  <select name="" id="" class="form-control">
-                    <option value="" selected='' disabled="">Quận/Huyện</option>
-                    <option value="">Cầu Giấy</option>
-                    <option value="">Ba Đình</option>
-                  </select>
-                </div>
-              </div>
-            </div> -->
             <div class="form-group mb-2">
               <textarea name="orderNote" id="orderNote" ng-model="orderNote" rows="2" class="form-control"  placeholder="Ghi chú thêm (Không bắt buộc)"></textarea>
             </div>
-
             <p class="p fz12">Vui lòng kiểm tra kỹ thông tin trước khi đặt dùng thử.</p>
           </div>
         </div>
