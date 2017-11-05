@@ -1,4 +1,19 @@
+var jwt = require('jsonwebtoken');
+var moment = require('moment');
+
 module.exports = {
+
+  generateToken: function (user) {
+    //TODO Replace iss value when release
+    var payload = {
+      iss: 'my.domain.com1',
+      sub: user.id,
+      iat: moment().unix(),
+      exp: moment().add(7, 'days').unix()
+    };
+    return jwt.sign(payload, process.env.TOKEN_SECRET);
+  },
+
   getRandomInt: function (min, max) {
       return Math.floor(Math.random() * (max - min + 1) + min);
   },
