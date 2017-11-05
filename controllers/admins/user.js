@@ -53,3 +53,59 @@ exports.loginPost = function (req, res, next) {
     });
 };
 
+exports.listAllUser = function (req, res, next) {
+  new User()
+    .query(function (qb) {
+      qb.select('id', 'name', 'email', 'phone_number', 'created_at')
+    })
+    .where('permission', '!=', constants.USER_DEACTIVE)
+    .orderBy('created_at', 'desc')
+    .fetchAll()
+    .then(function (users) {
+      return res.send({ users: users });
+    })
+    .catch(function (err) {
+      return res.status(400).send(err);
+    })
+};
+
+exports.userDetail = function (req, res, next) {
+  req.assert('user_id', 'User_id không được trống.').notEmpty();
+
+  new User({ id: req.params.user_id })
+    .fetch()
+    .then(function (user) {
+      if (!user) {
+        return res.status(401).send({ msg: 'User không tồn tại' });
+      } else {
+        return res.send({ user: user });
+      }
+    })
+    .catch(function (err) {
+      return res.status(400).send(err);
+    })
+}
+
+exports.updateUser = function (req, res, next) {
+  req.assert('user_id', 'User_id không được trống').notEmpty();
+
+  var data = {
+    name: req.body.name,
+    gender: req.body.gender,
+    permission: req.body.permission,
+    address: req.body.address
+  };
+
+  new User({ id: data.user_id })
+    .save(data)
+    .then(function (result) {
+      return res.send({ msg: 'Thay đổi thông tin user thành công.' });
+    })
+    .catch(function (err) {
+      if (err.code === 'ER_DUP_ENTRY') {
+        res.status(409).send({ msg: 'Email hoặc số điện thoại đã tồn tại.' });
+      } else {
+        return res.status(400).send(err);
+      }
+    })
+};

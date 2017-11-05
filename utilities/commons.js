@@ -8,6 +8,7 @@ module.exports = {
     var payload = {
       iss: 'my.domain.com1',
       sub: user.id,
+      permission: user.permission,
       iat: moment().unix(),
       exp: moment().add(7, 'days').unix()
     };

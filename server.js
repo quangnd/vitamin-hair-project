@@ -87,6 +87,9 @@ app.get('/api/city', orderController.getListCity);
 
 // BEGIN ADMIN ROUTER
 app.post('/admin/login', adminUserController.loginPost);
+app.get('/admin/listuser', adminUserController.listAllUser);
+app.get('/admin/userdetail/:user_id', adminUserController.userDetail);
+app.post('/admin/edituser', adminUserController.updateUser);
 // END ADMIN ROUTER
 
 app.get('/', function(req, res) {
