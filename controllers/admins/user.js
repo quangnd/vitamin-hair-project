@@ -10,6 +10,18 @@ var User = require('../../models/User');
 var common = require('../../utilities/commons');
 var constants = require('../../utilities/constants');
 var userController = require('../user');
+
+/**
+ * Login required middleware
+ */
+exports.adminEnsureAuthenticated = function (req, res, next) {
+  if (req.isAuthenticated() && req.user.permission === constants.USER_ADMIN) {
+    next();
+  } else {
+    res.status(401).send({ msg: 'Bạn không phải quản trị viên' });
+  }
+};
+
 /**
  * POST /login
  * Sign in with email and password
