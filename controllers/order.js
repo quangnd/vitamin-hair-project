@@ -2,7 +2,8 @@ var Product = require('../models/Product');
 var Order = require('../models/Order');
 var OrderDetail = require('../models/OrderDetail');
 var OrderAddress = require('../models/OrderAddress');
-var cityList = require('../models/City');
+var City = require('../models/City');
+var District = require('../models/District');
 var async = require('async');
 var config = require('../knexfile');
 var knex = require('knex')(config);
@@ -180,5 +181,33 @@ exports.cancelOrder = function(req, res, next) {
 }
 
 exports.getListCity = function(req, res, next) {
-  return res.send ( {data: cityList.cityList} );
+  async.parallel([
+    function(callback) {
+      new City()
+        .fetchAll()
+        .then(function(cities) {
+          callback(null, cities);
+        })
+        .catch(function(err) {
+          callback('error', null);
+        })
+    },
+    function (callback) {
+      new District()
+        .fetchAll()
+        .then(function (districts) {
+          callback(null, districts);
+        })
+        .catch(function (err) {
+          callback('error', null);
+        })
+    }
+    ],
+    function (err, results) {
+      if(err) {
+        console.log(err);
+        return res.status(400).send({ msg: "Có lỗi trong quá trình tải dữ liệu. Xin vui lòng thử lại." });
+      }
+      return res.send({ cities: results[0], districts: results[1] });
+  })
 }

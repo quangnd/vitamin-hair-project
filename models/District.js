@@ -1,11 +1,11 @@
 var bookshelf = require('../config/bookshelf');
 
-var City = bookshelf.Model.extend({
-  tableName: 'cities',
+var District = bookshelf.Model.extend({
+  tableName: 'districts',
   hasTimestamps: false,
 
   initialize: function () {
   }
 });
 
-module.exports = City;
+module.exports = District;
