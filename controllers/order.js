@@ -125,30 +125,16 @@ exports.orderProduct = function(req, res, next) {
     })
 }
 
-exports.getListAll = function(req, res, next) {
-  new Order()
-    .orderBy('status', 'asc')
-    .orderBy('created_at', 'desc')
-    .fetchAll({ withRelated: ['user'] })
-    .then(function(orders) {
-      return res.send({ orders: orders });
-    })
-    .catch(function(err) {
-      return res.status(401).send(err);
-    })
-}
-
 /**
  * /GET /order/:user_id
  */
 exports.getByUserId = function(req, res, next) {
-  req.assert('user_id', 'User id is required').notEmpty();
   new Order()
     .query(function (qb) {
-      qb.select(knex.raw('orders.id, orders.user_id, orders.created_at, sum(products.price*order_details.quality) as total_price, orders.status')) //'orders.id', 'orders.user_id', 'orders.created_at','products.price', '*' ,'order_details.quality', 'orders.status')
+      qb.select(knex.raw('orders.id, orders.user_id, orders.created_at, sum(products.price*order_details.quality) as total_price, orders.status, orders.updated_at')) //'orders.id', 'orders.user_id', 'orders.created_at','products.price', '*' ,'order_details.quality', 'orders.status')
         .leftJoin('order_details', 'order_details.order_id', 'orders.id')
         .leftJoin('products', 'products.id', 'order_details.product_id')
-        .where('orders.user_id', req.params.user_id)
+        .where('orders.user_id', req.user.id)
         .groupBy('orders.id')
         .orderBy('orders.id', 'desc')
     })
@@ -160,9 +146,37 @@ exports.getByUserId = function(req, res, next) {
       return res.status(401).send(err);
     })
 }
+/**
+ * /PUT /api/order
+ */
+exports.cancelOrder = function(req, res, next) {
+  req.assert('order_id', 'Order Id không được rỗng').notEmpty();
 
-exports.changeStatusOrderById = function(req, res, next) {
+  new Order({ id: req.body.order_id })
+    .fetch()
+    .then(function(response) {
+      if(response.toJSON().user_id !== req.user.id) {
+        return res.status(400).send({ msg: "Đơn hàng này không phải của bạn." });
+      }
 
+      if (response.toJSON().status === constant.ORDER_STATUS_PENDING) {
+        new Order({ id: req.body.order_id })
+          .save({ status: constant.ORDER_STATUS_CANCEL }, { patch: true })
+          .then(function(response) {
+            return res.send({ msg: "Hủy đơn hàng thành công." });
+          })
+          .catch(function(err) {
+            return res.status(401).send({ msg: "Có lỗi trong quá trình hủy đơn hàng. Xin vui lòng thử lại." });
+          })
+      } else if (response.toJSON().status === constant.ORDER_STATUS_CANCEL){
+        return res.status(400).send({ msg: "Đơn hàng này đã được hủy rồi. Xin vui lòng không hủy lại" });
+      } else {
+        return res.status(400).send({ msg: "Đơn hàng của bạn đang trong quá trình xử lý nên không thể hủy." });
+      }
+    })
+    .catch(function(err) {
+      return res.status(401).send({ msg: "Có lỗi trong quá trình hủy đơn hàng. Xin vui lòng thử lại." });
+    })
 }
 
 exports.getListCity = function(req, res, next) {

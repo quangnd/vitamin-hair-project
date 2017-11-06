@@ -96,16 +96,16 @@ exports.updateUser = function (req, res, next) {
     address: req.body.address
   };
 
-  new User({ id: data.user_id })
-    .save(data)
+  new User({ id: req.body.user_id })
+    .save(data, { patch: true })
     .then(function (result) {
-      return res.send({ msg: 'Thay đổi thông tin user thành công.' });
+      return res.send({ msg: 'Thay đổi thông tin người dùng thành công.' });
     })
     .catch(function (err) {
       if (err.code === 'ER_DUP_ENTRY') {
         res.status(409).send({ msg: 'Email hoặc số điện thoại đã tồn tại.' });
       } else {
-        return res.status(400).send(err);
+        return res.status(400).send();
       }
     })
 };

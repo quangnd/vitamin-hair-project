@@ -59,7 +59,7 @@ app.use(function(req, res, next) {
     new User({ id: payload.sub })
       .fetch()
       .then(function(user) {
-        req.user = user;
+        req.user = user.toJSON();
         next();
       });
   } else {
@@ -80,9 +80,11 @@ app.post('/auth/facebook', userController.authFacebook);
 app.get('/auth/facebook/callback', userController.authFacebookCallback);
 app.post('/auth/google', userController.authGoogle);
 app.get('/auth/google/callback', userController.authGoogleCallback);
+
 app.post('/api/order', userController.ensureAuthenticated, orderController.orderProduct);
-app.get('/api/order/:user_id', userController.ensureAuthenticated, orderController.getByUserId);
-app.get('/api/order/listall', userController.ensureAuthenticated, orderController.getListAll);
+app.get('/api/order', userController.ensureAuthenticated, orderController.getByUserId);
+app.put('/api/order', userController.ensureAuthenticated, orderController.cancelOrder);
+
 app.get('/api/city', orderController.getListCity);
 
 // BEGIN ADMIN ROUTER
