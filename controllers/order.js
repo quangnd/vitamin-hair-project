@@ -43,7 +43,7 @@ exports.orderProduct = function(req, res, next) {
         return product.product_id === constant.PRODUCT_TRIAL_ID;
       });
 
-      if (isProdTrial.length && result.toJSON().is_trial) {
+      if (isProdTrial.length && result !== null && result.toJSON().is_trial) {
         return res.status(400).send({ msg: 'Bạn đã đặt sản phẩm dùng thử rồi. Xin vui lòng không đặt tiếp.' });
       }
 
